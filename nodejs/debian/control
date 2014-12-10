@@ -1,0 +1,13 @@
+Source: node-omcache
+Section: libs
+Priority: extra
+Maintainer: Alexander Berezhnoy <alexander.berezhnoy@gmail.com> 
+Build-Depends: cdbs, debhelper (>= 7)
+Standards-Version: 3.7.3
+
+Package: node-omcache
+Architecture: any
+Section: libs
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: node.js omcache-based memcache client
+  OMCache wrapper for Node.js
