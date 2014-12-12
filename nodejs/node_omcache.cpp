@@ -5,11 +5,11 @@
 #include <node.h>
 #include <omcache.h>
 #include <poll.h>
+#include <uv.h>
 #include <iostream>
 #include <sstream>
 #include <list>
 #include <map>
-#include <uv.h>
 
 using namespace v8;
 
@@ -214,7 +214,7 @@ private:
     void ProcessEvent(uv_poll_t * handle, int fd, int status, int event);
     void StopPolling(uv_poll_t *handle, int fd);
 
-    // monitor callbacks, close unused polls, removed completed callbacks
+    // monitor callbacks, close unused polls, remove completed callbacks
     static void Idle(uv_idle_t *handle, int);
     void Cleanup(uv_idle_t *, uv_poll_t*, int fd);
     void StartIdle(uv_poll_t *poll_handle, int fd);

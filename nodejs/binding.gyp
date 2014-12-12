@@ -2,8 +2,8 @@
   "targets": [
     {
       "target_name": "omcache",
-      "libraries": [ "-lomcache"],
-      "sources": [ "node_omcache.cpp" ],
+      "libraries": [ "-lomcache" ],
+      "sources": [ "node_omcache.cpp" ]
     }
   ]
 }

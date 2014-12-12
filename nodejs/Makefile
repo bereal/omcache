@@ -1,9 +1,16 @@
 LIBDIR ?= /usr/lib
 BASE=$(DESTDIR)$(LIBDIR)/node_modules/
-#/opt/f-secure/fsio-nodejs/lib/node_modules/
 OMCACHE_BIN:=./build/Release/omcache.node
 
 NODEJS_PACKAGE ?= nodejs
+
+ifeq ($(wildcard /etc/debian_version),"")
+NODEJS_VERSION ?= $(shell dpkg-query -f '$${Version}\n' -W $(NODEJS_PACKAGE) | cut -d- -f1)
+NODEGYP_TARGET := --target=$(NODEJS_VERSION)
+else
+NODEGYP_TARGET :=
+endif
+
 export DEB_DH_GENCONTROL_ARGS_ALL = -- -Vmisc:Depends=$(NODEJS_PACKAGE)
 export DEB_DH_INSTALL_ARGS := $(BASE)/omcache.node
 
@@ -13,7 +20,8 @@ $(OMCACHE_BIN): build/binding.Makefile
 	node-gyp build --verbose
 
 build/binding.Makefile:
-	node-gyp configure
+	node-gyp $(NODEGYP_TARGET) --ensure --verbose install
+	node-gyp $(NODEGYP_TARGET) configure
 
 install: $(OMCACHE_BIN)
 	mkdir -p $(BASE)
@@ -25,8 +33,9 @@ deb:
 	mv ../node-omcache* .
 
 clean:
-	rm -rf build node-omcache*.changes node-omcache*.deb
+	node-gyp clean
+	rm -rf node-omcache*.changes node-omcache*.deb
 
 deb-clean:
 
-.PHONY: all omcache
+.PHONY: all omcache deb install clean deb-clean
